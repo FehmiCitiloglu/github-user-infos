@@ -1,44 +1,84 @@
-const name = document.getElementById("name");
-const username = document.getElementById("username");
-const profilePhoto = document.getElementById("profile-photo");
+const button = document.querySelector("header button");
 
-const input = document.querySelector("header input");
 const repoInfo = document.querySelectorAll("#repo-info p  strong");
 
-console.log(repoInfo[0].innerHTML);
+// console.log(repoInfo[0].innerHTML);
 console.log(repoInfo[1].innerHTML);
 
-const repoRequest = "/repos?per_page=100";
-const url = "https://api.github.com/users/";
 // const uname = input.value;
-const uname = "FehmiCitiloglu";
+// FehmiCitiloglu
 
 const getUserData = async (username) => {
-  const result = await fetch(url + username)
-    .then((response) => response.json())
-    .then((user) => console.log(user))
-    .catch((error) => console.log(error));
-  return result;
+  const url = "https://api.github.com/users/";
+  const name = document.getElementById("name");
+  const profilePhoto = document.getElementById("profile-photo");
+  const uname = document.getElementById("username");
 
-  //   fetch(url + username)
-  //     .then((data) => data.json())
-  //     .then((users) => {
-  //       console.log("Users loaded", users);
-  //     });
+  await fetch(url + username)
+    .then((response) => response.json())
+    .then((user) => {
+      // console.log(user);
+      repoInfo[0].innerHTML = user.public_repos;
+      profilePhoto.src = user.avatar_url;
+      uname.innerHTML = "@" + user.login;
+      name.innerHTML = user.name;
+    })
+    .catch((error) => console.log(error));
+};
+const getUserRepo = async (username) => {
+  const repoRequest = "/repos?per_page=100";
+  const url = "https://api.github.com/users/";
+  const repoInfo = document.querySelectorAll("#repo-info p  strong");
+  let languages = [];
+  let totalSize = 0;
+  await fetch(url + username + repoRequest)
+    .then((data) => data.json())
+    .then((repos) => {
+      console.log(repos);
+      console.log(repos.map((repo) => (totalSize = repo.size + totalSize)));
+      console.log(repos.map((repo) => repo.language));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  repoInfo[1].innerHTML = (totalSize / 1000).toFixed(2) + " MB";
 };
 
 // let user = getUserData("FehmiCitiloglu", "avatar_url");
 // console.log(user.avatar_url);
 
-function handleInputChange(event) {
-  uname = event.target.value;
+function handleInput(event) {
+  const input = document.querySelector("header input");
+
+  let inputValue = input.value;
+
+  input.value = event.target.value;
+
+  // console.log(inputValue);
+  return getUserData(inputValue), getUserRepo(inputValue);
 }
 
-fetch(url + uname)
-  .then((data) => data.json())
-  .then((user) => {
-    console.log("User loaded", user);
-    profilePhoto.src = user.avatar_url;
-    username.innerHTML = user.login;
-    name.innerHTML = user.name;
-  });
+button.addEventListener("click", handleInput);
+
+// fetch(url + uname)
+//   .then((data) => data.json())
+//   .then((user) => {
+//     console.log("User loaded", user);
+//     profilePhoto.src = user.avatar_url;
+//     username.innerHTML = "@" + user.login;
+//     name.innerHTML = user.name;
+//   });
+
+// const denemeurl =
+//   "https://api.github.com/users/FehmiCitiloglu/repos?per_page=100";
+
+// fetch(denemeurl)
+//   .then((data) => data.json())
+//   .then((repos) => {
+//     console.log(repos);
+//     console.log(repos.map((repo) => repo.size));
+//     console.log(repos.map((repo) => repo.language));
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
