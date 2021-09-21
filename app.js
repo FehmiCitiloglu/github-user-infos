@@ -1,6 +1,8 @@
 const button = document.querySelector("header button");
-
+const languageList = document.querySelector("#languages");
 const repoInfo = document.querySelectorAll("#repo-info p  strong");
+const nameHTML = document.querySelector("#name").innerHTML;
+
 // const languageName = languageDiv.appendChild(document.createElement("p"));
 
 // const languagePercentage = languageDiv.appendChild(
@@ -70,21 +72,21 @@ const getUserRepo = async (username) => {
         const numLanguage = userLanguages.filter(
           (language) => language === currLanguage
         );
+        if (currLanguage !== null) {
+          const languageDiv = languageList.appendChild(
+            document.createElement("div")
+          );
+          const languageName = languageDiv.appendChild(
+            document.createElement("p")
+          );
 
-        const languageDiv = languageList.appendChild(
-          document.createElement("div")
-        );
-        const languageName = languageDiv.appendChild(
-          document.createElement("p")
-        );
+          const languagePercentage = languageDiv.appendChild(
+            document.createElement("strong")
+          );
+          const lanPercentage =
+            ((numLanguage.length * 100) / totalItem).toFixed(2) + "%";
+          // createLanguageNode(currLanguage, langPercentage);
 
-        const languagePercentage = languageDiv.appendChild(
-          document.createElement("strong")
-        );
-        const lanPercentage =
-          ((numLanguage.length * 100) / totalItem).toFixed(2) + "%";
-        // createLanguageNode(currLanguage, langPercentage);
-        if (currLanguage !== "null" || currLanguage !== undefined) {
           languageName.innerHTML = currLanguage;
           languagePercentage.innerHTML = lanPercentage;
         }
@@ -113,7 +115,10 @@ function handleInput(event) {
 
   input.value = event.target.value;
 
-  // console.log(inputValue);
+  console.log(nameHTML);
+  if (nameHTML !== undefined || nameHTML !== "") {
+    removeInfos();
+  }
   return getUserData(inputValue), getUserRepo(inputValue);
 }
 
@@ -141,3 +146,12 @@ button.addEventListener("click", handleInput);
 //   .catch((err) => {
 //     console.log(err);
 //   });
+
+function removeInfos() {
+  console.log(languageList.children);
+  const chilList = [...languageList.children];
+  chilList.forEach((child) => child.remove());
+  // forEach((childNode) => {
+  //   childNode.remove();
+  // });
+}
