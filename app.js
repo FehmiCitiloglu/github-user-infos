@@ -84,9 +84,10 @@ const getUserRepo = async (username) => {
         const lanPercentage =
           ((numLanguage.length * 100) / totalItem).toFixed(2) + "%";
         // createLanguageNode(currLanguage, langPercentage);
-        languageName.innerHTML = currLanguage;
-
-        languagePercentage.innerHTML = lanPercentage;
+        if (currLanguage !== "null" || currLanguage !== undefined) {
+          languageName.innerHTML = currLanguage;
+          languagePercentage.innerHTML = lanPercentage;
+        }
 
         console.log(
           `language ${currLanguage} represents ${(
