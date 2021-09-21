@@ -7,19 +7,19 @@ const repoInfo = document.querySelectorAll("#repo-info p  strong");
 //   document.createElement("strong")
 // );
 
-function createLanguageNode(language, percentage) {
-  const languageList = document.querySelector("#languages");
-  const languageDiv = languageList.appendChild(document.createElement("div"));
-  const languageName = languageDiv.appendChild(document.createElement("p"));
-  const languagePercentage = languageDiv.appendChild(
-    document.createElement("strong")
-  );
-  const languageText = (languageName.text = language);
-  const langPercentage = (languagePercentage.text = percentage) + "%";
+// function createLanguageNode(language, percentage) {
+//   const languageList = document.querySelector("#languages");
+//   const languageDiv = languageList.appendChild(document.createElement("div"));
+//   const languageName = languageDiv.appendChild(document.createElement("p"));
+//   const languagePercentage = languageDiv.appendChild(
+//     document.createElement("strong")
+//   );
+//   const languageText = (languageName.text = language);
+//   const langPercentage = (languagePercentage.text = percentage) + "%";
 
-  // console.log(languageList.children);
-}
-createLanguageNode("a", 2);
+//   // console.log(languageList.children);
+// }
+// createLanguageNode("a", 2);
 // console.log(repoInfo[0].innerHTML);
 // console.log(repoInfo[1].innerHTML);
 
@@ -43,6 +43,7 @@ const getUserData = async (username) => {
     })
     .catch((error) => console.log(error));
 };
+
 const getUserRepo = async (username) => {
   const repoRequest = "/repos?per_page=100";
   const url = "https://api.github.com/users/";
@@ -53,14 +54,6 @@ const getUserRepo = async (username) => {
     .then((data) => data.json())
     .then((repos) => {
       const languageList = document.querySelector("#languages");
-      const languageDiv = languageList.appendChild(
-        document.createElement("div")
-      );
-      const languageName = languageDiv.appendChild(document.createElement("p"));
-
-      const languagePercentage = languageDiv.appendChild(
-        document.createElement("strong")
-      );
       console.log(repos);
 
       console.log(repos.map((repo) => (totalSize = repo.size + totalSize)));
@@ -78,6 +71,16 @@ const getUserRepo = async (username) => {
           (language) => language === currLanguage
         );
 
+        const languageDiv = languageList.appendChild(
+          document.createElement("div")
+        );
+        const languageName = languageDiv.appendChild(
+          document.createElement("p")
+        );
+
+        const languagePercentage = languageDiv.appendChild(
+          document.createElement("strong")
+        );
         const lanPercentage =
           ((numLanguage.length * 100) / totalItem).toFixed(2) + "%";
         // createLanguageNode(currLanguage, langPercentage);
