@@ -1,9 +1,27 @@
 const button = document.querySelector("header button");
 
 const repoInfo = document.querySelectorAll("#repo-info p  strong");
+// const languageName = languageDiv.appendChild(document.createElement("p"));
 
+// const languagePercentage = languageDiv.appendChild(
+//   document.createElement("strong")
+// );
+
+function createLanguageNode(language, percentage) {
+  const languageList = document.querySelector("#languages");
+  const languageDiv = languageList.appendChild(document.createElement("div"));
+  const languageName = languageDiv.appendChild(document.createElement("p"));
+  const languagePercentage = languageDiv.appendChild(
+    document.createElement("strong")
+  );
+  const languageText = (languageName.text = language);
+  const langPercentage = (languagePercentage.text = percentage) + "%";
+
+  // console.log(languageList.children);
+}
+createLanguageNode("a", 2);
 // console.log(repoInfo[0].innerHTML);
-console.log(repoInfo[1].innerHTML);
+// console.log(repoInfo[1].innerHTML);
 
 // const uname = input.value;
 // FehmiCitiloglu
@@ -29,14 +47,51 @@ const getUserRepo = async (username) => {
   const repoRequest = "/repos?per_page=100";
   const url = "https://api.github.com/users/";
   const repoInfo = document.querySelectorAll("#repo-info p  strong");
-  let languages = [];
+  let languages = {};
   let totalSize = 0;
   await fetch(url + username + repoRequest)
     .then((data) => data.json())
     .then((repos) => {
+      const languageList = document.querySelector("#languages");
+      const languageDiv = languageList.appendChild(
+        document.createElement("div")
+      );
+      const languageName = languageDiv.appendChild(document.createElement("p"));
+
+      const languagePercentage = languageDiv.appendChild(
+        document.createElement("strong")
+      );
       console.log(repos);
+
       console.log(repos.map((repo) => (totalSize = repo.size + totalSize)));
+
       console.log(repos.map((repo) => repo.language));
+
+      const userLanguages = repos.map((repo) => repo.language);
+
+      const totalItem = userLanguages.length;
+
+      const uniqueLanguages = [...new Set(userLanguages)];
+
+      uniqueLanguages.forEach((currLanguage) => {
+        const numLanguage = userLanguages.filter(
+          (language) => language === currLanguage
+        );
+
+        const lanPercentage =
+          ((numLanguage.length * 100) / totalItem).toFixed(2) + "%";
+        // createLanguageNode(currLanguage, langPercentage);
+        languageName.innerHTML = currLanguage;
+
+        languagePercentage.innerHTML = lanPercentage;
+
+        console.log(
+          `language ${currLanguage} represents ${(
+            (numLanguage.length * 100) /
+            totalItem
+          ).toFixed(2)}%`
+        );
+      });
     })
     .catch((err) => {
       console.log(err);
