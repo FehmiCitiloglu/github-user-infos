@@ -2,6 +2,7 @@ const button = document.querySelector("header button");
 const languageList = document.querySelector("#languages");
 const repoInfo = document.querySelectorAll("#repo-info p  strong");
 const nameHTML = document.querySelector("#name").innerHTML;
+const userInfo = document.querySelector("#user-info");
 
 // const languageName = languageDiv.appendChild(document.createElement("p"));
 
@@ -42,8 +43,11 @@ const getUserData = async (username) => {
       profilePhoto.src = user.avatar_url;
       uname.innerHTML = "@" + user.login;
       name.innerHTML = user.name;
-    })
-    .catch((error) => console.log(error));
+    });
+  // .catch((error) => {
+
+  //   errorHandler(error);
+  // });
 };
 
 const getUserRepo = async (username) => {
@@ -52,6 +56,7 @@ const getUserRepo = async (username) => {
   const repoInfo = document.querySelectorAll("#repo-info p  strong");
   let languages = {};
   let totalSize = 0;
+
   await fetch(url + username + repoRequest)
     .then((data) => data.json())
     .then((repos) => {
@@ -100,7 +105,9 @@ const getUserRepo = async (username) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err.message);
+      console.log("catch trigger");
+      errorHandler("Not Found");
     });
   repoInfo[1].innerHTML = (totalSize / 1000).toFixed(2) + " MB";
 };
@@ -115,10 +122,21 @@ function handleInput(event) {
 
   input.value = event.target.value;
 
-  console.log(nameHTML);
+  // console.log(nameHTML);
   if (nameHTML !== undefined || nameHTML !== "") {
     removeInfos();
+    userInfo.classList.remove("hidden-while-error");
   }
+
+  // try {
+  // const errorNode = document.querySelector("label");
+  // if (!errorNode) {
+  //   console.log("errorNode if block work");
+  //   errorNode.remove;
+  // }
+  // } catch (e) {
+  //   console.log("errorNode catch trigger");
+  // }
   return getUserData(inputValue), getUserRepo(inputValue);
 }
 
@@ -148,10 +166,25 @@ button.addEventListener("click", handleInput);
 //   });
 
 function removeInfos() {
-  console.log(languageList.children);
-  const chilList = [...languageList.children];
-  chilList.forEach((child) => child.remove());
+  // console.log(languageList.children);
+  const childList = [...languageList.children];
+  childList.forEach((child) => child.remove());
   // forEach((childNode) => {
   //   childNode.remove();
   // });
+}
+
+function errorHandler(errorMessage) {
+  // const mainContent = document.querySelector("main");
+  const languageChildList = [...languageList.children];
+
+  languageChildList.forEach((child) => child.remove());
+
+  const errorElement = document.createElement("label");
+
+  languageList.appendChild(errorElement);
+  errorElement.innerHTML = errorMessage;
+  errorElement.classList = "error-handler";
+  console.log(errorElement);
+  userInfo.classList = "hidden-while-error";
 }

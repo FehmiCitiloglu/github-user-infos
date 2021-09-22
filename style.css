@@ -97,3 +97,15 @@ main {
   margin-left: 20px;
   margin-right: 20px;
 }
+
+.error-handler {
+  position: absolute;
+  top: 50%;
+  font-size: 50px;
+  color: red;
+}
+
+.hidden-while-error {
+  display: none;
+  visibility: hidden;
+}
