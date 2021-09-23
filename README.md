@@ -13,4 +13,4 @@
 
 * if you would write username that is not exist you gonna take an error like this..(but don't try 'asdasda' I don't know why it is not throwing any error)
 
-  ![image](./screenshots/result.png)
+  ![image](./screenshots/error.png)
