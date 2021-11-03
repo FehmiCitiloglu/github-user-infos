@@ -1,5 +1,7 @@
 ### Github profile analyzer
 
+[Live Demo](https://suspicious-raman-cbda69.netlify.app/)
+
 - To use just simply open index.html with your browser that support javascript
 
 * And then write username you wanna analyse to input area
